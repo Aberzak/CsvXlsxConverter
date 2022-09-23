@@ -25,6 +25,22 @@ class ConverterController extends AbstractController
       $file = new File();
 
       $form = $this->createForm(Uploader::class,$file);
+      $form->handleRequest($request);
+      
+      if ($form->isSubmitted() && $form->isValid()) { 
+        $file = $request->files->get('uploader')['file'];
+        $uploads_directory = $this->getParameter('uploads_directory');
+
+        $filename = md5(uniqid()) . '.' . $file->guessExtension();
+        $file->move(
+          $uploads_directory,
+          $filename
+        );
+
+        echo "<pre>";
+        var_dump($filename);die;
+      }
+
 
       return $this->renderForm('converter/homepage.html.twig',
             ['form' => $form,]);

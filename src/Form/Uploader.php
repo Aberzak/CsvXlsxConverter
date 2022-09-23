@@ -12,5 +12,7 @@ class Uploader extends AbstractType
     {
         $builder->add('file',FileType::class,['attr'=>['class' => 'uploader']])
             ->add('save',SubmitType::class);
+
+        
     }
 }
