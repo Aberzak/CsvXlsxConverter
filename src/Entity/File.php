@@ -28,33 +28,48 @@ class File
         $this->convert();
     }
 
-    public function getFile(): UploadedFile
-    {
-        return $this->file ;
-    }
-
-    public function setFile(UploadedFile $file): void
+    /**
+     * Set uploaded file before adjustments
+     * 
+     * @param UploadedFile $file :  file from the uploadform 
+     * 
+     */
+    private function setFile(UploadedFile $file): void
     {
         $this->file = $file;
     }
 
+    /**
+     * Get new Filename with downloadDirectory 
+     * 
+     * @return string 'downloads/...'
+     * 
+     */
     public function getNewFilename(): string
     {
         return $this->download_directory . '/' . $this->newFilename;
     }
 
+    /**
+     * Gets extention and send file to rigth converter. 
+     *  
+     */
     private function convert()
     {        
         $extention = $this->file->getClientMimeType();
         if ($extention == 'text/csv'){
-            $this->csvToXls();
+            $this->csvToXlsx();
         }elseif($extention == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
             $this->xlsxToCsv();
         }
 
     }
 
-    private function csvToXls()
+    /**
+     * Converts CSV file to XLSX file and save it in $this->download_directory
+     * 
+     */
+    private function csvToXlsx()
     {
         $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Csv');
 
@@ -64,6 +79,10 @@ class File
         $objWriter->save($this->download_directory . '/' . $this->newFilename);
     }
 
+    /**
+     * Converts XLSX file to CSV file and save it in $this->download_directory
+     * 
+     */
     private function xlsxToCsv()
     {
         $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');

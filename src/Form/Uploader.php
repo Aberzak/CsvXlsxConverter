@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -9,6 +10,11 @@ use Symfony\Component\Validator\Constraints\File;
 
 class Uploader extends AbstractType
 {
+
+    /**
+     * Create Form for upload
+     * 
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('file',FileType::class,['attr'=>['class' => 'uploader'],
